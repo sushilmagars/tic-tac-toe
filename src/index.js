@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { stat } from 'fs';
 import Board from './Board';
+import { debug } from 'util';
 
 class Game extends React.Component {
   constructor(props) {
@@ -16,6 +17,49 @@ class Game extends React.Component {
       playerOneIsNext: true,
       stepNumber: 0,
     }
+  }
+
+  setPlayerToken(event, isPlayerOne) {
+    const newToken  = event.target.value;
+    
+    // if use did not enter any token, do not update default tokens
+    if (!newToken) {
+      return;
+    }
+    
+    const currentToken = isPlayerOne ? this.state.playerOneToken : this.state.playerTwoToken;
+
+    if (newToken === currentToken) {
+      return;
+    }
+
+    let currentPlayerOneToken = this.state.playerOneToken;
+    let currentPlayerTwoToken = this.state.playerTwoToken;
+
+    // get the history of moves and current moves
+    let history = this.state.history.slice();
+    let current = history[history.length - 1].squares.slice();
+
+    current.forEach((value, key) => {
+      if (value === currentToken) {
+        current[key] = newToken;
+      }
+    });
+
+    history[history.length - 1] = {squares: current};
+
+    // set player token for appropriate player
+    if (isPlayerOne) {
+      currentPlayerOneToken = newToken;
+    } else {
+      currentPlayerTwoToken = newToken;
+    }
+
+    this.setState({
+      history: history,
+      playerOneToken: currentPlayerOneToken,
+      playerTwoToken: currentPlayerTwoToken
+    });
   }
 
   getWinner(squares) {
@@ -42,8 +86,8 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const newSquares = history[history.length - 1].squares.slice();
+    let history = this.state.history.slice(0, this.state.stepNumber + 1);
+    let newSquares = history[history.length - 1].squares.slice();
 
     if (this.getWinner(newSquares) || newSquares[i]) {
       return;
@@ -63,15 +107,14 @@ class Game extends React.Component {
   jumpToMove(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0,
+      playerOneIsNext: (step % 2) === 0,
     });
   }
 
   render() {
     const current = this.state.history[this.state.stepNumber];
-
-    let status;
     const winner = this.getWinner(current.squares);
+    let status;
 
     if (winner) {
       status = `Winner found: ${winner}`;
@@ -98,6 +141,17 @@ class Game extends React.Component {
             playerTwoToken={this.state.playerTwoToken}
             onClick={(i) => this.handleClick(i)}
             />
+        </div>
+        <div className="set-player-tokens">
+          <label>Enter player 1 token:
+            <input 
+              className="player-token"
+              onBlur={(event) => this.setPlayerToken(event, true)}
+              onChange={() => this.checkValidity}/>
+          </label>
+          <label>Enter player 2 token:
+            <input className="player-token" onBlur={(event) => this.setPlayerToken(event, false)}/>
+          </label>
         </div>
         <div className="game-info">
           <div>Next player to play: {status}</div>

@@ -47,8 +47,19 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+  display: block;
 }
 
-.set-player-token {
+.set-player-tokens {
+  margin-left: 20px;
+}
+
+.set-player-tokens label {
+  display: block;
+  margin-top: 10px;
+}
+
+.player-token {
   font-size: 20px;
+  margin-left: 5px; 
 }
