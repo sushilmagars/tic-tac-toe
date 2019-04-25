@@ -4,6 +4,7 @@ import './index.css';
 import { stat } from 'fs';
 import Board from './Board';
 import { debug } from 'util';
+import ErrorMessage from './ErrorMessage';
 
 class Game extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Game extends React.Component {
       playerTwoToken: 'O',
       playerOneIsNext: true,
       stepNumber: 0,
+      errorMessage: '',
     }
   }
 
@@ -29,8 +31,22 @@ class Game extends React.Component {
     
     const currentToken = isPlayerOne ? this.state.playerOneToken : this.state.playerTwoToken;
 
-    if (newToken === currentToken) {
+    let validationError;
+
+    if ((isPlayerOne && newToken === this.state.playerTwoToken) || newToken === this.state.playerOneToken) {
+      validationError = `Both players cannot have same token!`
+
+      this.setState({
+        errorMessage: validationError,
+      });
+
       return;
+    }
+
+    if (this.state.errorMessage) {
+      this.setState({
+        errorMessage: ''
+      });
     }
 
     let currentPlayerOneToken = this.state.playerOneToken;
@@ -147,11 +163,15 @@ class Game extends React.Component {
             <input 
               className="player-token"
               onBlur={(event) => this.setPlayerToken(event, true)}
-              onChange={() => this.checkValidity}/>
+            />
           </label>
           <label>Enter player 2 token:
-            <input className="player-token" onBlur={(event) => this.setPlayerToken(event, false)}/>
+            <input 
+              className="player-token"
+              onBlur={(event) => this.setPlayerToken(event, false)}
+            />
           </label>
+          <ErrorMessage message={this.state.errorMessage} />
         </div>
         <div className="game-info">
           <div>Next player to play: {status}</div>

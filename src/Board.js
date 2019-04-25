@@ -9,10 +9,6 @@ export default class Board extends React.Component {
       />;
   }
 
-  setPlayerToken(e) {
-
-  }
-
   render() {
     return (
       <div>
