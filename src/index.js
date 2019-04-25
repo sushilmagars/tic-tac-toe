@@ -2,47 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { stat } from 'fs';
+import Board from './Board';
 
-function Square(props) {
-  return (
-    <button
-      className="square"
-      onClick={props.onClick}>
-      {props.value}
-    </button>
-  );
-}
-
-class Board extends React.Component {
+class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: new Array(9).fill(null),
-      playerOneIsNext: true,
+      history: [
+        {squares: new Array(9).fill(null)}
+      ],
       playerOneToken: 'X',
-      playerTwoToken: 'O'
-    };
-  }
-
-  handleClick(i) {
-    const newSquares = this.state.squares.slice();
-    if (this.getWinner(newSquares) || newSquares[i]) {
-      return;
+      playerTwoToken: 'O',
+      playerOneIsNext: true,
+      stepNumber: 0,
     }
-
-    newSquares[i] = this.state.playerOneIsNext ? this.state.playerOneToken : this.state.playerTwoToken;
-
-    this.setState({
-      squares: newSquares,
-      playerOneIsNext: !this.state.playerOneIsNext
-    });
-  }
-
-  renderSquare(i) {
-    return <Square
-      value={this.state.squares[i]}
-      onClick={() => this.handleClick(i)}
-      />;
   }
 
   getWinner(squares) {
@@ -68,13 +41,38 @@ class Board extends React.Component {
     return null;
   }
 
-  setPlayerToken(e) {
+  handleClick(i) {
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const newSquares = history[history.length - 1].squares.slice();
 
+    if (this.getWinner(newSquares) || newSquares[i]) {
+      return;
+    }
+
+    newSquares[i] = this.state.playerOneIsNext ? this.state.playerOneToken : this.state.playerTwoToken;
+
+    this.setState({
+      history: history.concat([{
+        squares: newSquares,
+      }]),
+      stepNumber: history.length,
+      playerOneIsNext: !this.state.playerOneIsNext
+    });
+  }
+
+  jumpToMove(step) {
+    debugger
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2) === 0,
+    });
   }
 
   render() {
-    const winner = this.getWinner(this.state.squares);
+    const current = this.state.history[this.state.stepNumber];
+
     let status;
+    const winner = this.getWinner(current.squares);
 
     if (winner) {
       status = `Winner found: ${winner}`;
@@ -82,65 +80,29 @@ class Board extends React.Component {
       status = this.state.playerOneIsNext ? this.state.playerOneToken : this.state.playerTwoToken;
     }
 
-    return (
-      <div>
-        <div className="status">Turn player: {status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-  }
-}
+    const moves = this.state.history.map((value, move) => {
+      const description = move ? `Go to move # ${move}` : `Go to start`;
 
-function SetPlayer(props) {
-  return (
-    <input value={props.playerToken}></input>
-  );
-}
+      return (
+        <li key={move}>
+          <button onClick={() => this.jumpToMove(move)}>{description}</button>
+        </li>
+      );
+    });
 
-class Game extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      playerOneToken: 'X',
-      playerTwoToken: 'O'
-    }
-  }
-
-  handlePlayerTokenChange(newToken) {
-
-  }
-
-  render() {
     return (
       <div className="game">
         <div className="game-board">
-          <label className="set-player-token"> Set player 1: 
-            <SetPlayer 
-              playerToken={this.state.playerOneToken}
-              onPlayerTokenChange={() => this.handlePlayerTokenChange()}
-              />
-          </label>
-          <label className="set-player-token"> Set player 2: 
-            <SetPlayer playerToken={this.state.playerTwoToken} /></label>
-          <Board />
+          <Board
+            squares={current.squares}
+            playerOneToken={this.state.playerOneToken}
+            playerTwoToken={this.state.playerTwoToken}
+            onClick={(i) => this.handleClick(i)}
+            />
         </div>
         <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
+          <div>Next player to play: {status}</div>
+          <ol>{moves}</ol>
         </div>
       </div>
     );
