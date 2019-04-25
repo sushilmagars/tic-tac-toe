@@ -61,7 +61,6 @@ class Game extends React.Component {
   }
 
   jumpToMove(step) {
-    debugger
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0,
