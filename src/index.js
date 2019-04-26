@@ -139,7 +139,7 @@ class Game extends React.Component {
     if (winner) {
       status = `Winner found: ${winner}`;
     } else {
-      status = this.state.playerOneIsNext ? this.state.playerOneToken : this.state.playerTwoToken;
+      status = `Next player to play: ${this.state.playerOneIsNext ? this.state.playerOneToken : this.state.playerTwoToken}`;
     }
 
     const moves = this.state.history.map((value, move) => {
@@ -176,7 +176,7 @@ class Game extends React.Component {
           onClick={(i) => this.handleClick(i)}
           />
         <div className="game-info">
-          <div>Next player to play: {status}</div>
+          <div>{status}</div>
           <ol>{moves}</ol>
         </div>
       </div>
