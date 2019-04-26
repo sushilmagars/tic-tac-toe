@@ -7,4 +7,4 @@
 ``` npm start ```
 
 ### Screenshot
-[![image.png](https://i.postimg.cc/YqNFqq6X/image.png)](https://postimg.cc/kB4GTCh8)
+[![image.png](https://i.postimg.cc/v8fg3HNQ/image.png)](https://postimg.cc/Yj2CSk7V)
