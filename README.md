@@ -5,3 +5,8 @@
 
 ### 2. Start the game with -
 ``` npm start ```
+
+### Screenshot
+[![Screen-Shot-2019-04-25-at-7-17-54-PM.png](https://i.postimg.cc/Bv29Rk91/Screen-Shot-2019-04-25-at-7-17-54-PM.png)](https://postimg.cc/CZMQqvKF)
+
+[![image.png](https://i.postimg.cc/ydn5HzfW/image.png)](https://postimg.cc/mzzVYKWG)
