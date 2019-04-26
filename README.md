@@ -5,3 +5,6 @@
 
 ### 2. Start the game with -
 ``` npm start ```
+
+### Screenshot
+[![image.png](https://i.postimg.cc/YqNFqq6X/image.png)](https://postimg.cc/kB4GTCh8)
