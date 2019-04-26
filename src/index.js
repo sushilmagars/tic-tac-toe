@@ -102,6 +102,10 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
+    if (this.state.errorMessage) {
+      return;
+    }
+
     let history = this.state.history.slice(0, this.state.stepNumber + 1);
     let newSquares = history[history.length - 1].squares.slice();
 
@@ -150,29 +154,27 @@ class Game extends React.Component {
 
     return (
       <div className="game">
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            playerOneToken={this.state.playerOneToken}
-            playerTwoToken={this.state.playerTwoToken}
-            onClick={(i) => this.handleClick(i)}
-            />
-        </div>
         <div className="set-player-tokens">
           <label>Enter player 1 token:
             <input 
               className="player-token"
-              onBlur={(event) => this.setPlayerToken(event, true)}
+              onChange={(event) => this.setPlayerToken(event, true)}
             />
           </label>
           <label>Enter player 2 token:
             <input 
               className="player-token"
-              onBlur={(event) => this.setPlayerToken(event, false)}
+              onChange={(event) => this.setPlayerToken(event, false)}
             />
           </label>
           <ErrorMessage message={this.state.errorMessage} />
         </div>
+        <Board
+          squares={current.squares}
+          playerOneToken={this.state.playerOneToken}
+          playerTwoToken={this.state.playerTwoToken}
+          onClick={(i) => this.handleClick(i)}
+          />
         <div className="game-info">
           <div>Next player to play: {status}</div>
           <ol>{moves}</ol>
