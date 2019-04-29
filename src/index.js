@@ -28,7 +28,6 @@ class Game extends React.Component {
     }
     
     const currentToken = isPlayerOne ? this.state.playerOneToken : this.state.playerTwoToken;
-
     let validationError;
 
     if ((isPlayerOne && newToken === this.state.playerTwoToken) || newToken === this.state.playerOneToken) {
@@ -41,6 +40,7 @@ class Game extends React.Component {
       return;
     }
 
+    // remove validation error message if it already is diplayed and not needed anymore
     if (this.state.errorMessage) {
       this.setState({
         errorMessage: ''
@@ -50,10 +50,11 @@ class Game extends React.Component {
     let currentPlayerOneToken = this.state.playerOneToken;
     let currentPlayerTwoToken = this.state.playerTwoToken;
 
-    // get the history of moves and current moves
+    // get current moves
     let history = this.state.history.slice();
     let current = history[history.length - 1].squares.slice();
 
+    // set new token on current moves
     current.forEach((value, key) => {
       if (value === currentToken) {
         current[key] = newToken;
