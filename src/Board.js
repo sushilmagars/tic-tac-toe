@@ -12,7 +12,6 @@ export default class Board extends React.Component {
   render() {
     return (
       <div className="game-board">
-        {/* <div className="status">Turn player: {this.props.status}</div> */}
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}

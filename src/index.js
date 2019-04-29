@@ -22,7 +22,7 @@ class Game extends React.Component {
   setPlayerToken(event, isPlayerOne) {
     const newToken  = event.target.value;
     
-    // if use did not enter any token, do not update default tokens
+    // if user did not enter any token, do not update default tokens
     if (!newToken) {
       return;
     }
@@ -104,6 +104,7 @@ class Game extends React.Component {
       return;
     }
 
+    // .slice for immutability purpose
     let history = this.state.history.slice(0, this.state.stepNumber + 1);
     let newSquares = history[history.length - 1].squares.slice();
 
