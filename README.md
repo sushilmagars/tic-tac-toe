@@ -3,8 +3,8 @@
 ### 1. Install all packages
 ``` npm install ```
 
-### 2. Start the game with -
-``` npm start ```
+### 2. Start the server with -
+``` npm start ``` and navigate to localhost:3000 on browser to play the game.
 
 ### Screenshot
 [![Screen-Shot-2019-04-25-at-7-17-54-PM.png](https://i.postimg.cc/Bv29Rk91/Screen-Shot-2019-04-25-at-7-17-54-PM.png)](https://postimg.cc/CZMQqvKF)

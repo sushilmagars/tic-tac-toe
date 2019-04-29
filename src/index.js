@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { stat } from 'fs';
 import Board from './Board';
-import { debug } from 'util';
 import ErrorMessage from './ErrorMessage';
 
 class Game extends React.Component {
